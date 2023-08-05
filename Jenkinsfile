@@ -4,7 +4,9 @@ pipeline {
             stage("Build") {
                 steps {
                        sh "mvn -version"
-                       sh "mvn clean install"
+			           withMaven(maven : 'apache-maven-3.9.2') {
+			                bat'mvn clean compile'
+			           }
                 }
             }
          }
