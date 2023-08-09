@@ -1,8 +1,10 @@
 pipeline {
-	environment{
-		JAVA_TOOL_OPTIONS = "-Duser.home=/var/maven"
-	}
-    agent { dockerfile true }
+	agent {
+    	docker {
+    		label 'docker'
+    		image "maven:3.6.0-jdk-13"
+		}
+    }
          stages {
             stage("Build") {
                 steps {
