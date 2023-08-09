@@ -9,7 +9,7 @@ pipeline {
             stage("Build docker image") {
                 steps {
                        script{
-                       		sh 'docker build -t SiowYenChong/eduflex-backend .'
+                       		sh 'docker build -t siowyenchong/eduflex-backend .'
                        }
                 }
             }
