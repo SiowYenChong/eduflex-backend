@@ -1,23 +1,26 @@
 pipeline {
-	environment{
+	environment {
 		JAVA_TOOL_OPTIONS = "-Duser.home=/home/jenkins"
 	}
 	agent {
 		dockerfile {
 			label "docker"
-			args = "-v /tmp/maven:/home/jenkins/.m2 -e MAVEN CONFIG=/home/jenkins/.m2"
+			environment {
+				MAVEN_CONFIG = "/home/jenkins/.m2"
+			}
+			args "-v /tmp/maven:/home/jenkins/.m2"
 		}
 	}
-         stages {
-            stage("Build") {
-                steps {
-                       sh "mvn clean install"
-                }
-         }
-         }
-		post{
-			always{
-				cleanWs()
+	stages {
+		stage("Build") {
+			steps {
+				sh "mvn clean install"
 			}
 		}
+	}
+	post {
+		always {
+			cleanWs()
+		}
+	}
 }
