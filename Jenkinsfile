@@ -1,24 +1,21 @@
 pipeline {
-	environment {
-		JAVA_TOOL_OPTIONS = "-Duser.home=/home/jenkins"
-		MAVEN_CONFIG = "/home/jenkins/.m2"
-	}
-	agent {
-		dockerfile {
-			label "docker"
-			args "-v /tmp/maven:/home/jenkins/.m2"
-		}
-	}
-	stages {
-		stage("Build") {
-			steps {
-				sh "mvn clean install"
-			}
-		}
-	}
-	post {
-		always {
-			cleanWs()
-		}
-	}
+    agent any
+    tools{
+        maven 'maven_3_5_0'
+    }
+    stages{
+        stage('Build Maven'){
+            steps{
+                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'file:///C:/Users/Clarr/git/eduflex-backend']])
+                sh 'mvn clean install'
+            }
+        }
+        stage('Build docker image'){
+            steps{
+                script{
+                    sh 'docker build -t siowyenchong/eduflex-backend .'
+                }
+            }
+        }
+    }
 }
